@@ -4,7 +4,6 @@ const quotes = [
   { text: "You only live once, but if you do it right, once is enough.", category: "Inspiration" }
 ];
 
-// Rename function exactly to showRandomQuote
 function showRandomQuote() {
   const quoteDisplay = document.getElementById("quoteDisplay");
   const randomIndex = Math.floor(Math.random() * quotes.length);
@@ -26,5 +25,29 @@ function addQuote() {
   }
 }
 
+function createAddQuoteForm() {
+  const container = document.getElementById('addQuoteFormContainer');
+
+  const inputText = document.createElement('input');
+  inputText.type = 'text';
+  inputText.id = 'newQuoteText';
+  inputText.placeholder = 'Enter a new quote';
+
+  const inputCategory = document.createElement('input');
+  inputCategory.type = 'text';
+  inputCategory.id = 'newQuoteCategory';
+  inputCategory.placeholder = 'Enter quote category';
+
+  const addButton = document.createElement('button');
+  addButton.textContent = 'Add Quote';
+  addButton.onclick = addQuote;
+
+  container.appendChild(inputText);
+  container.appendChild(inputCategory);
+  container.appendChild(addButton);
+}
+
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+
+createAddQuoteForm();
 
