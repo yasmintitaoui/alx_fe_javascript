@@ -172,4 +172,35 @@ function init() {
 }
 
 window.onload = init;
+// Fetch quotes from fake server (JSONPlaceholder)
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=5");
+    const serverQuotes = await response.json();
+
+    // Convert to local quote format
+    const formattedQuotes = serverQuotes.map(q => ({
+      text: q.body,
+      category: q.title
+    }));
+
+    // Check for duplicates by comparing text
+    const localTexts = new Set(quotes.map(q => q.text));
+    const newQuotes = formattedQuotes.filter(q => !localTexts.has(q.text));
+
+    if (newQuotes.length > 0) {
+      quotes.push(...newQuotes);
+      saveQuotes();
+      populateCategories();
+      filterQuotes();
+
+      alert(`Synced ${newQuotes.length} new quote(s) from server.`);
+    }
+  } catch (error) {
+    console.error("Error syncing with server:", error);
+  }
+}
+
+// Periodic sync every 30 seconds
+setInterval(fetchQuotesFromServer, 30000);
 
